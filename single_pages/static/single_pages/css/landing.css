@@ -1,0 +1,11 @@
+body {
+    background: url('https://riverportvets.co.uk/wp-content/uploads/2023/06/thinking-about-getting-a-puppy-or-kitten.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.card{
+    background-color: rgba(255,255,255,0.6);
+}

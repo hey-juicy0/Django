@@ -1,0 +1,73 @@
+{% extends 'blog/base.html' %}
+{%load crispy_forms_tags%}
+
+{% block main_area %}
+{% if user.is_authenticated %}
+    {% if user.is_superuser or user.is_staff %}
+        <a class="btn btn-info btn-sm float-right" href="/blog/board/{{board.slug}}/create_post/" role="button"><i class="fas fa-pen"></i>&nbsp;&nbsp;New Post</a>
+    {% endif %}
+{% endif %}
+
+<h1 class="my-3" title="{{board.description}}">{{ board.name }}</h1>
+
+<table class="table mt-3" id="board-table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="text-center">제목</th>
+            <th scope="col" class="text-center">작성자</th>
+            <th scope="col" class="text-center">작성일</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{% url 'board_post_detail' board.slug post.pk %}">{{ post.title }}</a></td>
+            <td class="text-center">
+                <span class="badge badge-pill badge-light float-right">
+                    <img class="mr-1 rounded-circle" width="20px" src="{{ post.get_avatar_url }}" alt="{{ post.author }}">
+                    {{ post.author }}
+                </span>
+            </td>
+            <td class="small text-center">{{ post.created_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+    <ul class="pagination justify-content-center my-4">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Newer</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Newer</a>
+            </li>
+        {% endif %}
+
+        {% for page_num in paginator.page_range %}
+            {% if page_num == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Older</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Older</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}

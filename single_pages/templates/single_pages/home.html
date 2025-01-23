@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+{%load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쥬임</title>
+    <link rel="icon" href="{% static 'single_pages/images/favicon.ico' %}"/>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Pretendard', sans-serif;
+            overflow-x: hidden;
+            transition: opacity 1s ease; /* 부드러운 페이드아웃 효과 */
+
+        }
+
+        .section {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        .content {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            gap: 10%;
+            align-items: center;
+            width: 80%;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s ease;
+        }
+
+        .content.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .text {
+            font-size: 4em;
+            font-weight: 800;
+            letter-spacing: 20px;
+            transform: scale(1);
+            transition: all 0.1s ease;
+        }
+        .text.normal{
+            letter-spacing: 5px;
+            opacity: 1;
+            transition: letter-spacing 1.5s ease, opacity 1.5s ease;
+        }
+
+        .image {
+            width: 20%;
+            height: auto;
+            transform: scale(1);
+            transition: transform 0.1s ease, opacity 1s ease;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(-100px);
+        }
+
+        .visible .image {
+            transform: scale(1.5);
+        }
+
+
+        @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+        }
+
+        @keyframes flash {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+        }
+
+        @keyframes sectionSwitch {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 0.2;
+                transform: translateY(-150px) scale(1.3);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-300px) scale(0.7);
+            }
+        }
+
+        .section1-leave {
+            animation: sectionSwitch 1.5s ease forwards;
+        }
+
+        @keyframes sectionEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(150px) scale(0.7);
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateY(75px) scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .section2-enter {
+            animation: sectionEnter 1.5s ease forwards;
+
+        }
+
+        @keyframes backgroundFade {
+            from {
+                background-color: #ffffff;
+            }
+            to {
+                background-color: #BCD7FF;
+            }
+        }
+
+        .section.animate-bg {
+            animation: backgroundFade 1.5s ease forwards;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 1%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .scroll-down.visible {
+            opacity: 1;
+        }
+        .scroll-label{
+            font-weight: 700;
+            letter-spacing: 5px;
+            animation: blink 1.5s ease infinite;
+
+        }
+
+
+        .unique-section {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        .unique-content {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s ease;
+        }
+
+
+        .unique-content.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .unique-text-bold {
+            font-weight: bold;
+            font-size: 3em;
+            letter-spacing: 3px;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        .unique-text {
+            font-weight: 700;
+            font-size: 1.3em;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        @keyframes grow {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(3);
+            }
+        }
+
+        .unique-text-bold.grow {
+            animation: grow 1.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1.5s ease forwards;
+        }
+
+        .unique-content-4-text > p {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .unique-content-4.visible .unique-content-4-text > p {
+            opacity: 1;
+        }
+
+        /* Section5 애니메이션 */
+        .unique-content-5 {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .unique-content-5.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .unique-button:hover {
+            background-color: #B1F3BB;
+            font-weight:800;
+            color: #212b23;
+        }
+        .unique-button{
+            border-radius: 1em;
+            padding: 0.5em 2em;
+            border: 0.1em solid#87d393;
+            font-size: 1.3em;
+            font-weight:800;
+            text-align: center;
+            text-decoration: none;
+            color: #87d393;
+            width: 10%;
+        }
+        .jello-vertical{
+            animation: jello-vertical 1.2s 0.5s forwards;
+        }
+        @keyframes jello-vertical {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+            30% {
+                transform: scale3d(0.75, 1.25, 1);
+                background-color: #B1F3BB;
+                font-weight:800;
+            }
+            40% {
+                transform: scale3d(1.25, 0.75, 1);
+                background-color: #B1F3BB;
+                font-weight:800;
+            }
+            50% {
+                transform: scale3d(0.85, 1.15, 1);
+                background-color: #B1F3BB;
+                font-weight:800;
+            }
+            65% {
+                transform: scale3d(1.05, 0.95, 1);
+            }
+            75% {
+                transform: scale3d(0.95, 1.05, 1);
+            }
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+            }
+        #redirect-trigger-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 크기를 작게 설정 */
+        }
+        #redirect-trigger-section .unique-content {
+            opacity: 1;
+            transform: scale(2);
+            transition: none;
+        }
+        .redirect-text{
+            font-size: 2em;
+            font-weight: 700;
+        }
+        .blur-out-expand-fwd {
+            -webkit-animation: blur-out-expand-fwd 1s 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                    animation: blur-out-expand-fwd 1s 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+        @-webkit-keyframes blur-out-expand-fwd {
+            0% {
+                -webkit-transform: translateZ(0);
+                        transform: translateZ(0);
+                -webkit-filter: blur(0.01);
+                        filter: blur(0.01);
+            }
+            100% {
+                letter-spacing: 1em;
+                -webkit-transform: translateZ(300px);
+                        transform: translateZ(300px);
+                -webkit-filter: blur(12px) opacity(0%);
+                        filter: blur(12px) opacity(0%);
+            }
+            }
+            @keyframes blur-out-expand-fwd {
+            0% {
+                -webkit-transform: translateZ(0);
+                        transform: translateZ(0);
+                -webkit-filter: blur(0.01);
+                        filter: blur(0.01);
+            }
+            100% {
+                letter-spacing: 1em;
+                -webkit-transform: translateZ(300px);
+                        transform: translateZ(300px);
+                -webkit-filter: blur(12px) opacity(0%);
+                        filter: blur(12px) opacity(0%);
+            }
+            }
+
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Section3 애니메이션
+            const section3 = document.getElementById('unique-section-3');
+            const content3 = document.getElementById('unique-content-3');
+            const textBold3 = content3.querySelector('.unique-text-bold');
+
+            // Section4 텍스트 애니메이션
+            const section4 = document.getElementById('unique-section-4');
+            const content4 = document.getElementById('unique-content-4');
+            const texts4 = content4.querySelectorAll('p');
+
+            // Section6 텍스트 애니메이션
+            const section6 = document.getElementById('unique-section-6');
+            const content6 = document.getElementById('unique-content-6');
+            const text6 = content6.querySelector('.unique-text');
+
+            // Section5 애니메이션
+            const section5 = document.getElementById('unique-section-5');
+            const content5 = document.getElementById('unique-content-5');
+            const button5 = document.querySelector('.unique-button');
+
+            const redirectTriggerSection = document.getElementById('redirect-trigger-section');
+            const redirectTriggerOffset = redirectTriggerSection.offsetTop;
+            const textR = document.querySelector('.redirect-text')
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+
+                // Section3 활성화
+                const section3Offset = section3.offsetTop;
+                if (scrollY > section3Offset - windowHeight / 2) {
+                    content3.classList.add('visible');
+                    textBold3.classList.add('grow');
+                } else {
+                    content3.classList.remove('visible');
+                    textBold3.classList.remove('grow');
+                }
+                 // Section6 활성화
+                const section6Offset = section6.offsetTop;
+                if (scrollY > section6Offset - windowHeight / 2) {
+                    content6.classList.add('visible');
+                    text6.classList.add('grow');
+                } else {
+                    content6.classList.remove('visible');
+                    text6.classList.remove('grow');
+                }
+
+                // Section4 텍스트 애니메이션
+                const section4Offset = section4.offsetTop;
+                if (scrollY > section4Offset - windowHeight / 2) {
+                    content4.classList.add('visible');
+                    texts4.forEach((text, index) => {
+                        setTimeout(() => {
+                            text.classList.add('fade-in-up');
+                        }, index * 200); // 순차적으로 애니메이션
+                    });
+                } else {
+                    content4.classList.remove('visible');
+                    texts4.forEach((text) => text.classList.remove('fade-in-up'));
+                }
+
+                // Section5 활성화
+                const section5Offset = section5.offsetTop;
+                
+                if (scrollY > section5Offset - windowHeight / 2) {
+                    content5.classList.add('visible');
+                    button5.classList.add('jello-vertical');
+                }
+                else {
+                    content5.classList.remove('visible');
+                    button5.classList.remove('jello-vertical');
+                }
+                // Redirect Trigger 감지
+                if (scrollY > redirectTriggerOffset - windowHeight / 2) {
+                    textR.classList.add('blur-out-expand-fwd')
+                    setTimeout(() =>{
+                        window.location.assign('/home');
+                    },1600);
+                    }
+                
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js" type="module"></script>
+</head>
+<body>
+    <div class="section" id="section1">
+        <div class="content visible" id="section1-content">
+            <div class="text" id="text1">Hello World!</div>
+            <img class="image" id="image1" src="{% static 'single_pages/images/example.png' %}" alt="Example Image">
+        </div>
+        <div class="scroll-down" id="scrollDown">
+            <label class="scroll-label">Scroll Down!</label>
+            <dotlottie-wc src="https://lottie.host/b08738c1-262b-436a-8c14-09de1f9809e3/WzaicuVxmk.lottie" autoplay loop style="height: 5em; width: auto;"></dotlottie-wc>
+        </div>
+    </div>
+
+    <div class="section" id="section2">
+        <div class="content hidden" id="section2-content">
+            <div class="text normal" id="text2">저는 임지우입니다.</div>
+            <img class="image" id="image2" src="{% static 'single_pages/images/wink.png'%}" alt="Example Image">
+        </div>
+    </div>
+
+    <div class="unique-section" id="unique-section-3">
+        <div class="unique-content" id="unique-content-3">
+            <div class="unique-text-bold">Who AM I&nbsp;?</div>
+        </div>
+    </div>
+    <div class="unique-section" id="unique-section-6">
+        <div class="unique-content" id="unique-content-6" style="gap:5em; text-align: center; line-height: 200%; letter-spacing: 1px;">
+            <img src="{%static 'single_pages/images/computer.png'%}" alt="Computer" style="width: 20%; height: auto;"/>
+            <div class="unique-text">총학생회 기획국장 출신<br/>
+                컴퓨터공학 전공 PM준비생 </div>
+        </div>
+    </div>
+
+    <div class="unique-section unique-parallax" id="unique-section-4">
+        <div class="unique-content" id="unique-content-4">
+            <div style="display: flex; justify-content: center; width: 100%; flex-direction: column; align-items: center; gap: 2em;">
+                <img src="{%static 'single_pages/images/light.png'%}" alt="Unique Image 1" style="width: 15%; height: auto;">
+                <div style="display: flex; justify-content: center; gap:1em; align-items: center; ">
+                    <strong>#ENFP</strong>
+                    <strong>#아이디어뱅크</strong>
+                    <strong>#2000년생</strong>
+                </div>
+                <div>
+                    <p>💡 <strong>글로벌 사고력</strong>: 오랜 해외 생활로 얻은 창의적이고 다양한 관점 (0세 ~ 13세)</p>
+                    <p>💡 <strong>기획·운영 경험</strong>: 대규모 행사와 프로젝트에서 아이디어를 실행으로 연결</p>
+                    <p>💡 <strong>커뮤니케이션 역량</strong>: 다양한 조직과 현장에서 소통하며 쌓은 조율 능력</p>
+                    <p>💡 <strong>문제 해결 능력</strong>: 창의적이고 유연한 접근으로 새로운 해결책 제시</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="unique-section" id="unique-section-5">
+        <div class="unique-content" id="unique-content-5" style="display: flex; flex-direction: column; gap: 2em; justify-content: center; align-items: center;">
+            <div class="unique-text-bold">제가 더 궁금하신가요?</div>
+            <img src="{%static 'single_pages/images/heart.png'%}" alt="About Me Image" style="width: 25%; height: auto; margin-bottom: 1em;">
+            <a role="button" class="unique-button" href="/about_me">더보기</a>
+        </div>
+    </div>
+    <div class="unique-section" id="redirect-trigger-section">
+        <div class="unique-content">
+            <div class="redirect-text">
+                홈으로 이동 중 \^o^/
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const text1 = document.getElementById('text1');
+            const image1 = document.getElementById('image1');
+            const scrollDown = document.getElementById('scrollDown');
+
+            // 초기 transform 값 설정
+            text1.style.transform = 'scale(1)';
+            image1.style.transform = 'scale(1)';
+
+            // letter-spacing transition 시작
+            setTimeout(() => {
+                text1.classList.add('normal');
+            }, 500);
+
+            // letter-spacing transition 완료 후 blink 애니메이션 추가
+            text1.addEventListener('transitionend', (event) => {
+                if (event.propertyName === 'letter-spacing') { // letter-spacing transition 완료 확인
+                    text1.style.animation = 'blink 1.5s ease';
+                }
+            });
+
+            // flash 애니메이션 종료 후 scrollDown 표시
+            setTimeout(() => {
+                scrollDown.classList.add('visible');
+            }, 3000);
+        });
+
+
+        window.addEventListener('scroll', () => {
+            const text1 = document.getElementById('text1');
+            const image1 = document.getElementById('image1');
+            const section1Content = document.getElementById('section1-content');
+            const section2Content = document.getElementById('section2-content');
+            const section1 = document.getElementById('section1');
+            const scrollDown = document.getElementById('scrollDown');
+
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            // Scroll down 표시 토글
+            if (scrollY === 0) {
+                scrollDown.classList.add('visible');
+            } else {
+                scrollDown.classList.remove('visible');
+            }
+
+            // Scale text1 and image1 based on scroll position
+            const scaleFactor = Math.min(1 + scrollY / (windowHeight * 2), 2); // Scale up to 2x
+            text1.style.transform = `scale(${scaleFactor})`;
+            image1.style.transform = `scale(${scaleFactor})`;
+
+            // Hide section1 content when scrollY exceeds threshold
+            if (scrollY > (windowHeight * 0.4)) {
+                section1Content.style.opacity = '0';
+            } else {
+                section1Content.style.opacity = '1';
+            }
+
+            // Switch from section1 to section2
+            if (scrollY > windowHeight * 0.8) {
+                section1Content.classList.add('section1-leave');
+                section2Content.classList.remove('hidden');
+                section2Content.classList.add('section2-enter');
+                section1.classList.add('animate-bg');
+            } else {
+                section1Content.classList.remove('section1-leave');
+                section2Content.classList.remove('section2-enter');
+                section2Content.classList.add('hidden');
+                section1.classList.remove('animate-bg');
+            }
+        });
+    </script>
+</body>
+</html>
